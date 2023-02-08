@@ -44,6 +44,8 @@ class ProfileTest extends TestCase
         $this->assertSame('test@example.com', $user->email);
         $this->assertNotSame('default.png', $user->avatar);
         $this->assertNull($user->email_verified_at);
+
+        $this->assertFileExists(str_replace('storage', storage_path('app/public/'), $user->avatar));
     }
 
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void

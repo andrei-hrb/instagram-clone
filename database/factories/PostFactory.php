@@ -18,7 +18,8 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'image' => 'default.png',
+            'description' => fake()->text(),
         ];
     }
 }
