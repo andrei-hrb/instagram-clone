@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\Profile\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -32,12 +32,12 @@ class ProfileController extends Controller
     {
         $validated = $request->validated();
 
-        $request->user()->name = $validated['name'] ?? $request->user()->name;
-        $request->user()->email = $validated['email'] ?? $request->user()->email;
+        $request->user()->name = $validated['name'];
+        $request->user()->email = $validated['email'];
 
-        if ($request->file('avatar')) {
-            $fileName = Storage::putFile('public/images/avatars', $request->file('avatar'));
-            $request->user()->avatar = str_replace('public', 'storage', $fileName);
+        if ($validated['avatar'] !== null) {
+            $fileName = str_replace('public', 'storage', Storage::putFile('public/images/avatars', $request->file('avatar')));
+            $request->user()->avatar = $fileName;
         }
 
         if ($request->user()->isDirty('email')) {

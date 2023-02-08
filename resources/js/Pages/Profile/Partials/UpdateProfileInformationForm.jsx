@@ -1,35 +1,44 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import ImageInput from "@/Components/ImageInput";
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
-import { useState } from "react";
+import InputError from '@/Components/InputError'
+import InputLabel from '@/Components/InputLabel'
+import PrimaryButton from '@/Components/PrimaryButton'
+import TextInput from '@/Components/TextInput'
+import ImageInput from '@/Components/ImageInput'
+import { Link, useForm, usePage } from '@inertiajs/react'
+import { Transition } from '@headlessui/react'
+import { useState } from 'react'
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className }) {
-    const user = usePage().props.auth.user;
+export default function UpdateProfileInformation({
+    mustVerifyEmail,
+    status,
+    className,
+}) {
+    const user = usePage().props.auth.user
 
-    const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar,
-    });
+    const { data, setData, post, errors, processing, recentlySuccessful } =
+        useForm({
+            name: user.name,
+            email: user.email,
+            avatar: null,
+        })
 
-    const [previewImage, setPreviewImage] = useState(user.avatar === '' ? 'default.png' : user.avatar);
+    const [previewImage, setPreviewImage] = useState(
+        user.avatar === '' ? 'default.png' : user.avatar
+    )
 
     const submit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         post(route('profile.update'), data, {
             forceFormData: true,
-        });
-    };
+        })
+    }
 
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Profile Information</h2>
+                <h2 className="text-lg font-medium text-gray-900">
+                    Profile Information
+                </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
                     Update your account's profile information and email address.
@@ -85,17 +94,22 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                         {status === 'verification-link-sent' && (
                             <div className="mt-2 font-medium text-sm text-green-600">
-                                A new verification link has been sent to your email address.
+                                A new verification link has been sent to your
+                                email address.
                             </div>
                         )}
                     </div>
                 )}
 
                 <div>
-                    <InputLabel for="avatar" value="Avatar"/>
+                    <InputLabel for="avatar" value="Avatar" />
 
                     <div className="flex gap-5 items-center mt-1">
-                        <img src={previewImage} className="h-24 w-24 rounded-full border object-cover" alt="Avatar"/>
+                        <img
+                            src={previewImage}
+                            className="h-24 w-24 rounded-full border object-cover"
+                            alt="Avatar"
+                        />
 
                         <ImageInput
                             id="avatar"
@@ -103,9 +117,10 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                             handleChange={(e) => {
                                 setData('avatar', e.target.files[0])
 
-                                const reader = new FileReader();
-                                reader.onload = (file) => setPreviewImage(file.target.result);
-                                reader.readAsDataURL(e.target.files[0]);
+                                const reader = new FileReader()
+                                reader.onload = (file) =>
+                                    setPreviewImage(file.target.result)
+                                reader.readAsDataURL(e.target.files[0])
                             }}
                         />
                     </div>
@@ -127,5 +142,5 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 </div>
             </form>
         </section>
-    );
+    )
 }

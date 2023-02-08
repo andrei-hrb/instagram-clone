@@ -1,17 +1,27 @@
-import {forwardRef, useEffect, useRef, useState} from 'react';
-import "./ImageInput.css"
+import { forwardRef, useEffect, useRef } from 'react'
+import './ImageInput.css'
 
 export default forwardRef(function ImageInput(
-    { type = 'file', name, id, value, className, autoComplete, required, isFocused, handleChange },
+    {
+        type = 'file',
+        name,
+        id,
+        value,
+        className,
+        autoComplete,
+        required,
+        isFocused,
+        handleChange,
+    },
     ref
 ) {
-    const input = ref ? ref : useRef();
+    const input = ref ? ref : useRef()
 
     useEffect(() => {
         if (isFocused) {
-            input.current.focus();
+            input.current.focus()
         }
-    }, []);
+    }, [])
 
     return (
         <div className="flex">
@@ -31,5 +41,5 @@ export default forwardRef(function ImageInput(
                 onChange={(e) => handleChange(e)}
             />
         </div>
-    );
-});
+    )
+})

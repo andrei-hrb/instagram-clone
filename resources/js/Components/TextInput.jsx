@@ -1,16 +1,26 @@
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useRef } from 'react'
 
 export default forwardRef(function TextInput(
-    { type = 'text', name, id, value, className, autoComplete, required, isFocused, handleChange },
+    {
+        type = 'text',
+        name,
+        id,
+        value,
+        className,
+        autoComplete,
+        required,
+        isFocused,
+        handleChange,
+    },
     ref
 ) {
-    const input = ref ? ref : useRef();
+    const input = ref ? ref : useRef()
 
     useEffect(() => {
         if (isFocused) {
-            input.current.focus();
+            input.current.focus()
         }
-    }, []);
+    }, [])
 
     return (
         <div className="flex flex-col items-start">
@@ -29,5 +39,5 @@ export default forwardRef(function TextInput(
                 onChange={(e) => handleChange(e)}
             />
         </div>
-    );
-});
+    )
+})

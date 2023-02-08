@@ -1,4 +1,10 @@
-export default function DangerButton({ type = 'submit', className = '', processing, children, onClick }) {
+export default function DangerButton({
+    type = 'submit',
+    className = '',
+    processing,
+    children,
+    onClick,
+}) {
     return (
         <button
             type={type}
@@ -12,5 +18,5 @@ export default function DangerButton({ type = 'submit', className = '', processi
         >
             {children}
         </button>
-    );
+    )
 }
