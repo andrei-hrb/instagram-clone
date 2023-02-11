@@ -95,13 +95,13 @@ export default function Show({ auth, user }) {
                             <ul className="grid grid-cols-3 gap-6">
                                 {posts.map((post) => (
                                     <li key={post.id}>
-                                        <a href="#">
+                                        <Link href={route('posts.show', post.id)}>
                                             <img
                                                 className="object-cover aspect-square rounded-sm hover:brightness-75 transition"
                                                 src={'/' + post.image}
                                                 alt={post.description}
                                             />
-                                        </a>
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>

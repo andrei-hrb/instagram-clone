@@ -44,6 +44,17 @@ class PostController extends Controller
     }
 
     /**
+     * Display the post.
+     */
+    public function show(Post $post): Response
+    {
+        return Inertia::render('Post/Show', [
+            'status' => session('status'),
+            'post' => $post->load('user'),
+        ]);
+    }
+
+    /**
      * Delete the post.
      */
     public function destroy(Post $post): RedirectResponse
