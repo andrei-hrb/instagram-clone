@@ -187,12 +187,12 @@ export default function Show({ auth, user }) {
                                         alt={`${follower.name}'s Profile Picture`}
                                     />
                                     <div className="flex flex-col">
-                                    <p className="font-semibold">
-                                        {follower.name}
-                                    </p>
-                                    <p className="text-sm text-slate-400">
-                                        @{follower.username}
-                                    </p>
+                                        <p className="font-semibold">
+                                            {follower.name}
+                                        </p>
+                                        <p className="text-sm text-slate-400">
+                                            @{follower.username}
+                                        </p>
                                     </div>
                                 </Link>
                             </li>

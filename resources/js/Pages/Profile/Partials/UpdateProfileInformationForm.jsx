@@ -109,7 +109,9 @@ export default function UpdateProfileInformation({
                         type="text"
                         className="mt-1 block w-full"
                         value={data.username}
-                        handleChange={(e) => setData('username', e.target.value)}
+                        handleChange={(e) =>
+                            setData('username', e.target.value)
+                        }
                         required
                         autoComplete="username"
                     />
