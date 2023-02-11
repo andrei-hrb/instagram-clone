@@ -7,6 +7,7 @@ import TextInput from '@/Components/TextInput'
 import PrimaryButton from '@/Components/PrimaryButton'
 import { Transition } from '@headlessui/react'
 import { useEffect, useState } from 'react'
+import TextArea from '@/Components/TextArea'
 
 export default function Create({ auth, status }) {
     const {
@@ -34,7 +35,6 @@ export default function Create({ auth, status }) {
     }
 
     useEffect(() => {
-        console.log('da')
         setPreviewImage(null)
         reset()
     }, [recentlySuccessful])
@@ -95,14 +95,14 @@ export default function Create({ auth, status }) {
                                     value="Description"
                                 />
 
-                                <TextInput
+                                <TextArea
                                     id="description"
-                                    type="textarea"
-                                    className="mt-1 block w-full border h-32"
+                                    className="mt-1 block w-full border p-3"
                                     value={data.description}
                                     handleChange={(e) =>
                                         setData('description', e.target.value)
                                     }
+                                    rows={3}
                                 />
 
                                 <InputError

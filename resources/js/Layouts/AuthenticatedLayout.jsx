@@ -36,6 +36,12 @@ export default function Authenticated({ auth, header, children }) {
                                 >
                                     Create a new Post
                                 </NavLink>
+                                <NavLink
+                                    href={route('search.index')}
+                                    active={route().current('search.index')}
+                                >
+                                    Search
+                                </NavLink>
                             </div>
                         </div>
 
@@ -73,9 +79,17 @@ export default function Authenticated({ auth, header, children }) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
+                                            href={route(
+                                                'profile.show',
+                                                auth.user.id
+                                            )}
+                                        >
+                                            See your Profile
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
                                             href={route('profile.edit')}
                                         >
-                                            Edit Profile
+                                            Edit your Profile
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
@@ -152,6 +166,13 @@ export default function Authenticated({ auth, header, children }) {
                         >
                             Create a new Post
                         </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            href={route('search.index')}
+                            active={route().current('search.index')}
+                        >
+                            Search
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
@@ -166,7 +187,7 @@ export default function Authenticated({ auth, header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>
-                                Edit Profile
+                                Edit your Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"

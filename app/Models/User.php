@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -42,4 +43,52 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the name of the index associated with the model.
+     *
+     * @return string
+     */
+    public function searchableAs(): string
+    {
+        return 'users_index';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (int) $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+        ];
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function following(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followed_user', 'followed_id', 'following_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followed_user', 'following_id', 'followed_id');
+    }
 }

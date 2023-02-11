@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Profile\ProfileFollowOrUnfollowRequest;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,6 +16,19 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    /**
+     * Display somebody's profile.
+     */
+    public function show(User $user): Response
+    {
+        return Inertia::render('Profile/Show', [
+            'user' => $user->load(['posts', 'followers', 'following']),
+            //            'posts' => $user->posts()->get(),
+            //            'followers' => $user->followers()->get(),
+            //            'following' => $user->following()->get(),
+        ]);
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -68,5 +83,23 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function follow(ProfileFollowOrUnfollowRequest $request): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        auth()->user()->following()->syncWithoutDetaching($validated['id']);
+
+        return Redirect::route('profile.show', $validated['id']);
+    }
+
+    public function unfollow(ProfileFollowOrUnfollowRequest $request): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        auth()->user()->following()->detach($validated['id']);
+
+        return Redirect::route('profile.show', $validated['id']);
     }
 }

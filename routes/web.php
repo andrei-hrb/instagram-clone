@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -23,9 +24,20 @@ Route::get('/feed', function () {
 })->middleware(['auth', 'verified'])->name('feed');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::prefix('profile')->group(function () {
+        Route::get('/{user}', [ProfileController::class, 'show'])->name('profile.show');
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::post('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        Route::post('/follow', [ProfileController::class, 'follow'])->name('profile.follow');
+        Route::post('/unfollow', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
+    });
+
+    Route::prefix('search')->group(function () {
+        Route::get('/', [SearchController::class, 'index'])->name('search.index');
+        Route::post('/', [SearchController::class, 'query'])->name('search.query');
+    });
 
     Route::prefix('posts')->group(function () {
         Route::get('create', [PostController::class, 'create'])->name('posts.create');

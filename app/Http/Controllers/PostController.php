@@ -14,6 +14,16 @@ use Inertia\Response;
 class PostController extends Controller
 {
     /**
+     * Display the post's form.
+     */
+    public function create(Request $request): Response
+    {
+        return Inertia::render('Post/Create', [
+            'status' => session('status'),
+        ]);
+    }
+
+    /**
      * Store the post.
      */
     public function store(PostStoreRequest $request): RedirectResponse
@@ -31,16 +41,6 @@ class PostController extends Controller
         $post->save();
 
         return Redirect::route('posts.create');
-    }
-
-    /**
-     * Display the post's form.
-     */
-    public function create(Request $request): Response
-    {
-        return Inertia::render('Post/Create', [
-            'status' => session('status'),
-        ]);
     }
 
     /**

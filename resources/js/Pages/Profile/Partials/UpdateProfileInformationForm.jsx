@@ -6,6 +6,7 @@ import ImageInput from '@/Components/ImageInput'
 import { Link, useForm, usePage } from '@inertiajs/react'
 import { Transition } from '@headlessui/react'
 import { useState } from 'react'
+import * as slug from 'slug'
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -48,7 +49,6 @@ export default function UpdateProfileInformation({
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
                     <InputLabel for="name" value="Name" />
-
                     <TextInput
                         id="name"
                         className="mt-1 block w-full"
@@ -58,6 +58,7 @@ export default function UpdateProfileInformation({
                         isFocused
                         autoComplete="name"
                     />
+                    <small>Your username: {slug(data.name)}</small>
 
                     <InputError className="mt-2" message={errors.name} />
                 </div>
