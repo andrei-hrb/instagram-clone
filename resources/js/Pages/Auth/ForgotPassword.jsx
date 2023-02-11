@@ -6,7 +6,7 @@ import { Head, useForm } from '@inertiajs/react'
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
-        email: '',
+        login: '',
     })
 
     const onHandleChange = (event) => {
@@ -38,15 +38,15 @@ export default function ForgotPassword({ status }) {
             <form onSubmit={submit}>
                 <TextInput
                     id="password"
-                    type="email"
-                    name="email"
-                    value={data.email}
+                    type="text"
+                    name="login"
+                    value={data.login}
                     className="mt-1 block w-full"
                     isFocused={true}
                     handleChange={onHandleChange}
                 />
 
-                <InputError message={errors.email} className="mt-2" />
+                <InputError message={errors.login} className="mt-2" />
 
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ml-4" processing={processing}>

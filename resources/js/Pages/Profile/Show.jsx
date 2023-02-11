@@ -1,6 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link, useForm } from '@inertiajs/react'
-import * as slug from 'slug'
 import Modal from '@/Components/Modal'
 import { useState } from 'react'
 
@@ -38,7 +37,7 @@ export default function Show({ auth, user }) {
                                     {user.name}
                                 </h3>
                                 <h4 className="text-lg text-slate-400">
-                                    @{slug(user.name)}
+                                    @{user.username}
                                 </h4>
                                 <div className="flex space-x-6 mt-4">
                                     <div>
@@ -144,9 +143,14 @@ export default function Show({ auth, user }) {
                                         src={'/' + follower.avatar}
                                         alt={`${follower.name}'s Profile Picture`}
                                     />
-                                    <p className="font-semibold">
-                                        {follower.name}
-                                    </p>
+                                    <div className="flex flex-col">
+                                        <p className="font-semibold">
+                                            {follower.name}
+                                        </p>
+                                        <p className="text-sm text-slate-400">
+                                            @{follower.username}
+                                        </p>
+                                    </div>
                                 </Link>
                             </li>
                         ))}
@@ -182,9 +186,14 @@ export default function Show({ auth, user }) {
                                         src={'/' + follower.avatar}
                                         alt={`${follower.name}'s Profile Picture`}
                                     />
+                                    <div className="flex flex-col">
                                     <p className="font-semibold">
                                         {follower.name}
                                     </p>
+                                    <p className="text-sm text-slate-400">
+                                        @{follower.username}
+                                    </p>
+                                    </div>
                                 </Link>
                             </li>
                         ))}

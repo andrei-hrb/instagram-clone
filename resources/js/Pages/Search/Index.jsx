@@ -86,9 +86,14 @@ export default function Index({ auth, errors }) {
                                                         className="h-24 w-24 rounded-full border-2 object-cover"
                                                         alt={`${result.name}'s Profile Picture`}
                                                     />
-                                                    <span className="font-semibold">
-                                                        {result.name}
-                                                    </span>
+                                                    <div className="flex flex-col">
+                                                        <span className="font-semibold">
+                                                            {result.name}
+                                                        </span>
+                                                        <span className="text-sm text-slate-400">
+                                                            @{result.username}
+                                                        </span>
+                                                    </div>
                                                 </Link>
                                             </li>
                                         ))}

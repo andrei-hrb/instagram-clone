@@ -6,7 +6,6 @@ import ImageInput from '@/Components/ImageInput'
 import { Link, useForm, usePage } from '@inertiajs/react'
 import { Transition } from '@headlessui/react'
 import { useState } from 'react'
-import * as slug from 'slug'
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -19,6 +18,7 @@ export default function UpdateProfileInformation({
         useForm({
             name: user.name,
             email: user.email,
+            username: user.username,
             avatar: null,
         })
 
@@ -58,7 +58,6 @@ export default function UpdateProfileInformation({
                         isFocused
                         autoComplete="name"
                     />
-                    <small>Your username: {slug(data.name)}</small>
 
                     <InputError className="mt-2" message={errors.name} />
                 </div>
@@ -73,7 +72,7 @@ export default function UpdateProfileInformation({
                         value={data.email}
                         handleChange={(e) => setData('email', e.target.value)}
                         required
-                        autoComplete="username"
+                        autoComplete="email"
                     />
 
                     <InputError className="mt-2" message={errors.email} />
@@ -101,6 +100,22 @@ export default function UpdateProfileInformation({
                         )}
                     </div>
                 )}
+
+                <div>
+                    <InputLabel for="username" value="Username" />
+
+                    <TextInput
+                        id="username"
+                        type="text"
+                        className="mt-1 block w-full"
+                        value={data.username}
+                        handleChange={(e) => setData('username', e.target.value)}
+                        required
+                        autoComplete="username"
+                    />
+
+                    <InputError className="mt-2" message={errors.username} />
+                </div>
 
                 <div>
                     <InputLabel for="avatar" value="Avatar" />
