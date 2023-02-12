@@ -61,6 +61,21 @@ export default function Login({ status, canResetPassword }) {
                     />
 
                     <InputError message={errors.login} className="mt-2" />
+                    {errors.username && errors.email && (
+                        <InputError
+                            message="Email / Username required"
+                            className="mt-2"
+                        />
+                    )}
+                    {!errors.username && errors.email && (
+                        <InputError message={errors.email} className="mt-2" />
+                    )}
+                    {errors.username && !errors.email && (
+                        <InputError
+                            message={errors.username}
+                            className="mt-2"
+                        />
+                    )}
                 </div>
 
                 <div className="mt-4">

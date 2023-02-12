@@ -142,7 +142,10 @@ export default function Show({ auth, user }) {
                                 >
                                     <img
                                         className="h-16 w-16 rounded-full"
-                                        src={follower.image ?? '/default.png'}
+                                        src={
+                                            follower.image?.url ??
+                                            '/default.png'
+                                        }
                                         alt={`${follower.name}'s Profile Picture`}
                                     />
                                     <div className="flex flex-col">
@@ -185,7 +188,10 @@ export default function Show({ auth, user }) {
                                 >
                                     <img
                                         className="h-16 w-16 rounded-full"
-                                        src={follower.image ?? '/default.png'}
+                                        src={
+                                            follower.image?.url ??
+                                            '/default.png'
+                                        }
                                         alt={`${follower.name}'s Profile Picture`}
                                     />
                                     <div className="flex flex-col">

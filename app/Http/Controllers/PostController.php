@@ -51,6 +51,7 @@ class PostController extends Controller
         return Inertia::render('Post/Show', [
             'status' => session('status'),
             'post' => $post->load('user'),
+            'likes' => $post->likes,
         ]);
     }
 
@@ -62,5 +63,23 @@ class PostController extends Controller
         $post->delete();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Like the post.
+     */
+    public function like(Post $post, Request $request)
+    {
+        if ($post->likes()->exists()) {
+            $post->likes()->delete([
+                'user_id' => $request->user()->id,
+            ]);
+        } else {
+            $post->likes()->create([
+                'user_id' => $request->user()->id,
+            ]);
+        }
+
+        return redirect()->back();
     }
 }

@@ -81,7 +81,7 @@ export default function Index({ auth, errors }) {
                                                 >
                                                     <img
                                                         src={
-                                                            result.image &&
+                                                            result.image?.url ??
                                                             '/default.png'
                                                         }
                                                         className="h-24 w-24 rounded-full border-2 object-cover"
