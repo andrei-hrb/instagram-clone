@@ -40,7 +40,7 @@ class Post extends Model
         'user_id',
     ];
 
-    protected $with = ['image'];
+    protected $with = ['image', 'likes', 'comments'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

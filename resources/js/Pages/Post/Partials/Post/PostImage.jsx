@@ -3,7 +3,7 @@ import { router } from '@inertiajs/react'
 export default function PostImage({ post }) {
   return (
     <div
-      className="md:p-12 text-gray-900 select-none"
+      className="md:p-6 text-gray-900 select-none"
       onDoubleClick={() =>
         router.visit(route('posts.like', post.id), {
           method: 'post',
