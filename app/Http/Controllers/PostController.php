@@ -30,15 +30,15 @@ class PostController extends Controller
     {
         $validated = $request->validated();
 
-        $fileName = Storage::putFile('public/images/posts', $request->file('image'));
-
         $post = Post::create([
-            'image' => str_replace('public', 'storage', $fileName),
             'description' => $validated['description'],
             'user_id' => $request->user()->id,
         ]);
 
-        $post->save();
+        $post->image()->create([
+            'url' => env('DO_URL').Storage::putFile('instagram/images/posts', $request->file('image')),
+            'user_id' => $request->user()->id,
+        ]);
 
         return Redirect::route('posts.create');
     }

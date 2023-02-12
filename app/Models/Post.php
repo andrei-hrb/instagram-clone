@@ -2,12 +2,28 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Imageable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, Imageable;
+
+    /**
+     * Set default order
+     *
+     * @return void
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy('created_at', 'desc');
+        });
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -15,10 +31,11 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'image',
         'description',
         'user_id',
     ];
+
+    protected $with = ['image'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -81,7 +81,8 @@ export default function Index({ auth, errors }) {
                                                 >
                                                     <img
                                                         src={
-                                                            '/' + result.avatar
+                                                            result.image &&
+                                                            '/default.png'
                                                         }
                                                         className="h-24 w-24 rounded-full border-2 object-cover"
                                                         alt={`${result.name}'s Profile Picture`}

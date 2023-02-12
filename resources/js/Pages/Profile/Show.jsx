@@ -28,7 +28,7 @@ export default function Show({ auth, user }) {
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <div className="grid text-center md:text-left place-items-center md:place-items-start md:grid-cols-2 gap-12">
                             <img
-                                src={'/' + user.avatar}
+                                src={user.image?.url ?? '/default.png'}
                                 alt={`${user.name}'s Profile Picture`}
                                 className="h-48 w-48 rounded-full object-cover border border-4"
                             />
@@ -95,10 +95,12 @@ export default function Show({ auth, user }) {
                             <ul className="grid grid-cols-3 gap-6">
                                 {posts.map((post) => (
                                     <li key={post.id}>
-                                        <Link href={route('posts.show', post.id)}>
+                                        <Link
+                                            href={route('posts.show', post.id)}
+                                        >
                                             <img
                                                 className="object-cover aspect-square rounded-sm hover:brightness-75 transition"
-                                                src={'/' + post.image}
+                                                src={post.image?.url}
                                                 alt={post.description}
                                             />
                                         </Link>
@@ -140,7 +142,7 @@ export default function Show({ auth, user }) {
                                 >
                                     <img
                                         className="h-16 w-16 rounded-full"
-                                        src={'/' + follower.avatar}
+                                        src={follower.image ?? '/default.png'}
                                         alt={`${follower.name}'s Profile Picture`}
                                     />
                                     <div className="flex flex-col">
@@ -183,7 +185,7 @@ export default function Show({ auth, user }) {
                                 >
                                     <img
                                         className="h-16 w-16 rounded-full"
-                                        src={'/' + follower.avatar}
+                                        src={follower.image ?? '/default.png'}
                                         alt={`${follower.name}'s Profile Picture`}
                                     />
                                     <div className="flex flex-col">

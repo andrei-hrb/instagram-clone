@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Traits\Imageable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +12,7 @@ use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, Searchable;
+    use HasApiTokens, HasFactory, Notifiable, Searchable, Imageable;
 
     /**
      * The attributes that are mass assignable.
@@ -23,8 +24,9 @@ class User extends Authenticatable
         'email',
         'username',
         'password',
-        'avatar',
     ];
+
+    protected $with = ['image'];
 
     /**
      * The attributes that should be hidden for serialization.

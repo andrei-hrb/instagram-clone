@@ -1,5 +1,5 @@
 input[type='file'] {
-    width: 140px !important;
+    width: 130px !important;
 }
 
 input::file-selector-button {

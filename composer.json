@@ -12,7 +12,9 @@
         "laravel/sanctum": "^3.2",
         "laravel/scout": "^9.8",
         "laravel/tinker": "^2.7",
-        "tightenco/ziggy": "^1.0"
+        "league/flysystem-aws-s3-v3": "^3.12",
+        "tightenco/ziggy": "^1.0",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

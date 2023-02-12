@@ -19,11 +19,13 @@ export default function UpdateProfileInformation({
             name: user.name,
             email: user.email,
             username: user.username,
-            avatar: null,
+            image: null,
         })
 
     const [previewImage, setPreviewImage] = useState(
-        user.avatar === '' ? 'default.png' : user.avatar
+        user.image?.url === null || user.image?.url === undefined
+            ? '/default.png'
+            : user.image?.url
     )
 
     const submit = (e) => {
@@ -120,30 +122,33 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <InputLabel for="avatar" value="Avatar" />
+                    <InputLabel for="image" value="Image" />
 
                     <div className="flex gap-5 items-center mt-1">
                         <img
                             src={previewImage}
                             className="h-24 w-24 rounded-full border object-cover"
-                            alt="Avatar"
+                            alt="Image"
                         />
 
                         <ImageInput
-                            id="avatar"
+                            id="image"
                             className="block w-full"
                             handleChange={(e) => {
-                                setData('avatar', e.target.files[0])
+                                setData('image', e.target.files[0])
 
                                 const reader = new FileReader()
                                 reader.onload = (file) =>
                                     setPreviewImage(file.target.result)
-                                reader.readAsDataURL(e.target.files[0])
+
+                                if (e.target.files[0] instanceof Blob) {
+                                    reader.readAsDataURL(e.target.files[0])
+                                }
                             }}
                         />
                     </div>
 
-                    <InputError className="mt-2" message={errors.avatar} />
+                    <InputError className="mt-2" message={errors.image} />
                 </div>
 
                 <div className="flex items-center gap-4">

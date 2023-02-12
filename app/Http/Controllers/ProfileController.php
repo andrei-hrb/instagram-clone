@@ -48,9 +48,17 @@ class ProfileController extends Controller
         $request->user()->email = $validated['email'];
         $request->user()->username = $validated['username'];
 
-        if (array_key_exists('avatar', $validated) && $validated['avatar'] !== null) {
-            $fileName = str_replace('public', 'storage', Storage::putFile('public/images/avatars', $request->file('avatar')));
-            $request->user()->avatar = $fileName;
+        if (array_key_exists('image', $validated) && $validated['image'] !== null) {
+            if ($request->user()->image()->exists()) {
+                $request->user()->image->update([
+                    'url' => env('DO_URL').Storage::putFile('instagram/images/avatars', $request->file('image')),
+                ]);
+            } else {
+                $request->user()->image()->create([
+                    'url' => env('DO_URL').Storage::putFile('instagram/images/avatars', $request->file('image')),
+                    'user_id' => $request->user()->id,
+                ]);
+            }
         }
 
         if ($request->user()->isDirty('email')) {
