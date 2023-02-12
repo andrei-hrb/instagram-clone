@@ -1,12 +1,12 @@
-import 'react-toastify/dist/ReactToastify.css';
-import './AuthenticatedLayout.css';
-import {useEffect, useState} from 'react'
+import 'react-toastify/dist/ReactToastify.css'
+import './AuthenticatedLayout.css'
+import { useEffect, useState } from 'react'
 import ApplicationLogo from '@/Components/ApplicationLogo'
 import Dropdown from '@/Components/Dropdown'
 import NavLink from '@/Components/NavLink'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
-import {Link, router} from '@inertiajs/react'
-import {Slide, toast, ToastContainer} from "react-toastify";
+import { Link, router } from '@inertiajs/react'
+import { Slide, toast, ToastContainer } from 'react-toastify'
 
 export default function Authenticated({ auth, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false)
@@ -14,18 +14,38 @@ export default function Authenticated({ auth, header, children }) {
   useEffect(() => {
     Echo.private(`user.${auth.user.id}`)
       .listen('NewFollower', (e) => {
-        toast(() => <Link className="block" href={route('profile.show', e.user.id)}>{`👥 User ${e.user.name} (@${e.user.username}) just started following you!`}</Link>)
+        toast(() => (
+          <Link
+            className="block"
+            href={route('profile.show', e.user.id)}
+          >{`👥 User ${e.user.name} (@${e.user.username}) just started following you!`}</Link>
+        ))
       })
       .listen('NewLike', (e) => {
-        toast(() => <Link className="block" href={route('posts.show', e.post.id)}>{`👍 User ${e.user.name} (@${e.user.username}) just liked your post!`}</Link>)
+        toast(() => (
+          <Link
+            className="block"
+            href={route('posts.show', e.post.id)}
+          >{`👍 User ${e.user.name} (@${e.user.username}) just liked your post!`}</Link>
+        ))
       })
       .listen('NewComment', (e) => {
-        toast(() => <Link className="block" href={route('posts.show', e.post.id)}>{`💬 User ${e.user.name} (@${e.user.username}) just commented on your post!`}</Link>)
+        toast(() => (
+          <Link
+            className="block"
+            href={route('posts.show', e.post.id)}
+          >{`💬 User ${e.user.name} (@${e.user.username}) just commented on your post!`}</Link>
+        ))
       })
       .listen('NewPost', (e) => {
-        toast(() => <Link className="block" href={route('posts.show', e.post.id)}>{`✨ User ${e.user.name} (@${e.user.username}) just added a new post!`}</Link>)
+        toast(() => (
+          <Link
+            className="block"
+            href={route('posts.show', e.post.id)}
+          >{`✨ User ${e.user.name} (@${e.user.username}) just added a new post!`}</Link>
+        ))
       })
-  }, []);
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-100">

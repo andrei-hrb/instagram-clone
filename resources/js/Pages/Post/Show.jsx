@@ -23,15 +23,14 @@ export default function Index({ auth, errors, post }) {
   const postHasDescription = post.description !== null
   const postHasComments = post.comments.length > 0
 
-  Echo.channel(`post.${post.id}`)
-    .listen('UpdatePost', (e) => {
-      if (e.user_id !== auth.user.id) {
-        router.reload({
-          preserveState: true,
-          preserveScroll: true,
-        })
-      }
-    })
+  Echo.channel(`post.${post.id}`).listen('UpdatePost', (e) => {
+    if (e.user_id !== auth.user.id) {
+      router.reload({
+        preserveState: true,
+        preserveScroll: true,
+      })
+    }
+  })
 
   return (
     <AuthenticatedLayout

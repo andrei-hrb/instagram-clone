@@ -12,6 +12,7 @@ class FeedController extends Controller
     {
         $followingIds = Auth::user()->following->pluck('id');
         $posts = Post::whereIn('user_id', $followingIds)->orderBy('created_at', 'desc')->with('user')->get();
+
         return Inertia::render('Feed', [
             'posts' => $posts,
         ]);
