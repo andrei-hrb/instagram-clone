@@ -189,6 +189,11 @@ export default function Authenticated({ auth, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
+                            <ResponsiveNavLink
+                                href={route('profile.show', auth.user.id)}
+                            >
+                                See your Profile
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink href={route('profile.edit')}>
                                 Edit your Profile
                             </ResponsiveNavLink>

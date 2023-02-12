@@ -32,7 +32,10 @@ export default function Index({ auth, errors, post, likes }) {
                     </div>
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 flex space-x-4">
-                            <Link href={route('posts.like', post.id)}>
+                            <Link
+                                href={route('posts.like', post.id)}
+                                preserveScroll={true}
+                            >
                                 <Heart
                                     classNames={'w-6 h-6'}
                                     filled={[...likes]
