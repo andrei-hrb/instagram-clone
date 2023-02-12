@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewComment;
+use App\Events\UpdatePost;
 use App\Http\Requests\Comment\CommentDestroyRequest;
 use App\Http\Requests\Comment\CommentStoreRequest;
 use App\Http\Requests\Comment\CommentUpdateRequest;
@@ -23,6 +25,12 @@ class CommentController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
+        if ($post->user_id !== $request->user()->id) {
+            NewComment::dispatch($post->user, $post);
+        }
+
+        UpdatePost::dispatch($post);
+
         return Redirect::back();
     }
 
@@ -37,6 +45,8 @@ class CommentController extends Controller
             'content' => $validated['content'],
         ]);
 
+        UpdatePost::dispatch($comment->commentable);
+
         return Redirect::back();
     }
 
@@ -48,6 +58,8 @@ class CommentController extends Controller
         $request->validated();
 
         $comment->delete();
+
+        UpdatePost::dispatch($comment->commentable);
 
         return Redirect::back();
     }

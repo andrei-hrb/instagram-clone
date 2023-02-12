@@ -32,7 +32,7 @@ export default function Index({ auth, errors }) {
         <div className="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900">
-              <InputLabel value="Search" forInput="search" />
+              <InputLabel value="Query" forInput="search" />
               <TextInput
                 id="search"
                 name="search"
@@ -46,10 +46,10 @@ export default function Index({ auth, errors }) {
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900">
               {JSON.stringify(results) === '[]' && query === '' && (
-                <h5 className="text-center font-semibold">Search for users.</h5>
+                <h5 className="text-center py-5 font-semibold">Search for users.</h5>
               )}
               {JSON.stringify(results) === '[]' && query !== '' && (
-                <h5 className="text-center font-semibold">No users have been found!</h5>
+                <h5 className="text-center py-5 font-semibold">No users have been found!</h5>
               )}
               {JSON.stringify(results) !== '[]' && query !== '' && (
                 <ul className="flex flex-col space-y-6">

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewFollower;
+use App\Events\UpdateUser;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -66,6 +68,8 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
+        UpdateUser::dispatch($request->user());
+
         return Redirect::route('profile.edit');
     }
 
@@ -96,7 +100,11 @@ class ProfileController extends Controller
             $request->user()->following()->detach($user->id);
         } else {
             $request->user()->following()->syncWithoutDetaching($user->id);
+            NewFollower::dispatch($user);
         }
+
+        UpdateUser::dispatch($request->user());
+        UpdateUser::dispatch($user);
 
         return Redirect::route('profile.show', $user->id);
     }

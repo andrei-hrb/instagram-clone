@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewLike;
+use App\Events\NewPost;
+use App\Events\UpdatePost;
 use App\Http\Requests\Post\PostDestroyRequest;
 use App\Http\Requests\Post\PostStoreRequest;
 use App\Http\Requests\Post\PostUpdateRequest;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -42,6 +46,8 @@ class PostController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
+        $request->user()->followers->each(fn ($follower) => NewPost::dispatch($follower, $post));
+
         return Redirect::route('posts.create');
     }
 
@@ -74,6 +80,8 @@ class PostController extends Controller
     {
         $request->validated();
 
+        UpdatePost::dispatch($post);
+
         $post->delete();
 
         return Redirect::to('/');
@@ -90,7 +98,13 @@ class PostController extends Controller
             $post->likes()->create([
                 'user_id' => $request->user()->id,
             ]);
+
+            if ($post->user_id !== $request->user()->id) {
+                NewLike::dispatch($post->user, $post);
+            }
         }
+
+        UpdatePost::dispatch($post);
 
         return Redirect::back();
     }

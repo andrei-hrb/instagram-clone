@@ -23,6 +23,16 @@ export default function Index({ auth, errors, post }) {
   const postHasDescription = post.description !== null
   const postHasComments = post.comments.length > 0
 
+  Echo.channel(`post.${post.id}`)
+    .listen('UpdatePost', (e) => {
+      if (e.user_id !== auth.user.id) {
+        router.reload({
+          preserveState: true,
+          preserveScroll: true,
+        })
+      }
+    })
+
   return (
     <AuthenticatedLayout
       auth={auth}
@@ -36,7 +46,7 @@ export default function Index({ auth, errors, post }) {
       <Head title={`${post.user.name}'s Post #${post.id}`} />
 
       <div className="py-12">
-        <div className="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div className="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <PostImage post={post} />
           </div>

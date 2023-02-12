@@ -1,15 +1,47 @@
-import { useState } from 'react'
+import 'react-toastify/dist/ReactToastify.css';
+import './AuthenticatedLayout.css';
+import {useEffect, useState} from 'react'
 import ApplicationLogo from '@/Components/ApplicationLogo'
 import Dropdown from '@/Components/Dropdown'
 import NavLink from '@/Components/NavLink'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
-import { Link } from '@inertiajs/react'
+import {Link, router} from '@inertiajs/react'
+import {Slide, toast, ToastContainer} from "react-toastify";
 
 export default function Authenticated({ auth, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false)
 
+  useEffect(() => {
+    Echo.private(`user.${auth.user.id}`)
+      .listen('NewFollower', (e) => {
+        toast(() => <Link className="block" href={route('profile.show', e.user.id)}>{`👥 User ${e.user.name} (@${e.user.username}) just started following you!`}</Link>)
+      })
+      .listen('NewLike', (e) => {
+        toast(() => <Link className="block" href={route('posts.show', e.post.id)}>{`👍 User ${e.user.name} (@${e.user.username}) just liked your post!`}</Link>)
+      })
+      .listen('NewComment', (e) => {
+        toast(() => <Link className="block" href={route('posts.show', e.post.id)}>{`💬 User ${e.user.name} (@${e.user.username}) just commented on your post!`}</Link>)
+      })
+      .listen('NewPost', (e) => {
+        toast(() => <Link className="block" href={route('posts.show', e.post.id)}>{`✨ User ${e.user.name} (@${e.user.username}) just added a new post!`}</Link>)
+      })
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100">
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Slide}
+      />
       <nav className="bg-white border-b border-gray-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
@@ -27,7 +59,7 @@ export default function Authenticated({ auth, header, children }) {
               </div>
               <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 <NavLink href={route('posts.create')} active={route().current('posts.create')}>
-                  Create a new Post
+                  New post
                 </NavLink>
                 <NavLink href={route('search.index')} active={route().current('search.index')}>
                   Search
@@ -111,7 +143,7 @@ export default function Authenticated({ auth, header, children }) {
             </ResponsiveNavLink>
 
             <ResponsiveNavLink href={route('posts.create')} active={route().current('posts.create')}>
-              Create a new Post
+              New post
             </ResponsiveNavLink>
 
             <ResponsiveNavLink href={route('search.index')} active={route().current('search.index')}>

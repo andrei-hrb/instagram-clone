@@ -76,9 +76,9 @@ export default function Show({ auth, user }) {
               <ul className="grid grid-cols-3 gap-6">
                 {posts.map((post) => (
                   <li key={post.id}>
-                    <Link href={route('posts.show', post.id)}>
+                    <Link className="hover:brightness-75" href={route('posts.show', post.id)}>
                       <img
-                        className="object-cover aspect-square rounded-sm hover:brightness-75 transition"
+                        className="object-cover aspect-square rounded-sm transition"
                         src={post.image?.url}
                         alt={post.description}
                       />
@@ -87,7 +87,7 @@ export default function Show({ auth, user }) {
                 ))}
               </ul>
             )}
-            {posts.length === 0 && <h3 className="py-5 text-center text-2xl font-bold">No posts yet.</h3>}
+            {posts.length === 0 && <h3 className="py-5 text-center text-semibold">No posts yet.</h3>}
           </div>
         </div>
       </div>
