@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Commentable;
 use App\Models\Traits\Imageable;
 use App\Models\Traits\Likeable;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use HasFactory, Imageable, Likeable;
+    use HasFactory, Imageable, Likeable, Commentable;
 
     /**
      * Set default order

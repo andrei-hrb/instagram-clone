@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
@@ -30,8 +31,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        Route::post('/follow', [ProfileController::class, 'follow'])->name('profile.follow');
-        Route::post('/unfollow', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
+        Route::post('/{user}/follow', [ProfileController::class, 'follow'])->name('profile.follow');
     });
 
     Route::prefix('search')->group(function () {
@@ -40,14 +40,20 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('posts')->group(function () {
-        Route::get('create', [PostController::class, 'create'])->name('posts.create');
+        Route::get('/create', [PostController::class, 'create'])->name('posts.create');
         Route::post('/', [PostController::class, 'store'])->name('posts.store');
-        Route::get('{post}', [PostController::class, 'show'])->name('posts.show');
-        Route::get('{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-        Route::patch('{post}', [PostController::class, 'update'])->name('posts.update');
-        Route::delete('{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+        Route::get('/{post}', [PostController::class, 'show'])->name('posts.show');
+        Route::get('/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        Route::patch('/{post}', [PostController::class, 'update'])->name('posts.update');
+        Route::delete('/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
-        Route::get('{post}/like', [PostController::class, 'like'])->name('posts.like');
+        Route::post('/{post}/like', [PostController::class, 'like'])->name('posts.like');
+    });
+
+    Route::prefix('comments')->group(function () {
+        Route::post('/{post}', [CommentController::class, 'store'])->name('comments.store');
+        Route::patch('/{comment}', [CommentController::class, 'update'])->name('comments.update');
+        Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     });
 });
 

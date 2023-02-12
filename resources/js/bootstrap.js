@@ -1,5 +1,7 @@
 import _ from 'lodash'
 import axios from 'axios'
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en.json'
 
 window._ = _
 
@@ -12,6 +14,8 @@ window._ = _
 window.axios = axios
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+
+TimeAgo.addDefaultLocale(en)
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

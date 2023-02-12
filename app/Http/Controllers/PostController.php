@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Post\PostDestroyRequest;
 use App\Http\Requests\Post\PostStoreRequest;
+use App\Http\Requests\Post\PostUpdateRequest;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -50,16 +52,28 @@ class PostController extends Controller
     {
         return Inertia::render('Post/Show', [
             'status' => session('status'),
-            'post' => $post->load('user'),
-            'likes' => $post->likes,
+            'post' => $post->load(['user', 'likes', 'comments']),
         ]);
+    }
+
+    public function update(Post $post, PostUpdateRequest $request): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        $post->update([
+            'description' => $validated['description'],
+        ]);
+
+        return Redirect::back();
     }
 
     /**
      * Delete the post.
      */
-    public function destroy(Post $post): RedirectResponse
+    public function destroy(Post $post, PostDestroyRequest $request): RedirectResponse
     {
+        $request->validated();
+
         $post->delete();
 
         return Redirect::to('/');
@@ -68,18 +82,16 @@ class PostController extends Controller
     /**
      * Like the post.
      */
-    public function like(Post $post, Request $request)
+    public function like(Post $post, Request $request): RedirectResponse
     {
-        if ($post->likes()->exists()) {
-            $post->likes()->delete([
-                'user_id' => $request->user()->id,
-            ]);
+        if ($post->likes()->where('user_id', $request->user()->id)->exists()) {
+            $post->likes()->where('user_id', $request->user()->id)->delete();
         } else {
             $post->likes()->create([
                 'user_id' => $request->user()->id,
             ]);
         }
 
-        return redirect()->back();
+        return Redirect::back();
     }
 }

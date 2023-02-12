@@ -8,129 +8,102 @@ import TextInput from '@/Components/TextInput'
 import { Head, Link, useForm } from '@inertiajs/react'
 
 export default function Login({ status, canResetPassword }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        login: '',
-        password: '',
-        remember: '',
-    })
+  const { data, setData, post, processing, errors, reset } = useForm({
+    login: '',
+    password: '',
+    remember: '',
+  })
 
-    useEffect(() => {
-        return () => {
-            reset('password')
-        }
-    }, [])
-
-    const onHandleChange = (event) => {
-        setData(
-            event.target.name,
-            event.target.type === 'checkbox'
-                ? event.target.checked
-                : event.target.value
-        )
+  useEffect(() => {
+    return () => {
+      reset('password')
     }
+  }, [])
 
-    const submit = (e) => {
-        e.preventDefault()
+  const onHandleChange = (event) => {
+    setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value)
+  }
 
-        post(route('login'))
-    }
+  const submit = (e) => {
+    e.preventDefault()
 
-    return (
-        <GuestLayout>
-            <Head title="Log in" />
+    post(route('login'))
+  }
 
-            {status && (
-                <div className="mb-4 font-medium text-sm text-green-600">
-                    {status}
-                </div>
+  return (
+    <GuestLayout>
+      <Head title="Log in" />
+
+      {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+
+      <form onSubmit={submit}>
+        <div>
+          <InputLabel forInput="login" value="Email / Username" />
+
+          <TextInput
+            id="login"
+            type="text"
+            name="login"
+            value={data.login}
+            className="mt-1 block w-full"
+            autoComplete="username"
+            isFocused={true}
+            handleChange={onHandleChange}
+          />
+
+          <InputError message={errors.login} className="mt-2" />
+          {errors.username && errors.email && <InputError message="Email / Username required" className="mt-2" />}
+          {!errors.username && errors.email && <InputError message={errors.email} className="mt-2" />}
+          {errors.username && !errors.email && <InputError message={errors.username} className="mt-2" />}
+        </div>
+
+        <div className="mt-4">
+          <InputLabel forInput="password" value="Password" />
+
+          <TextInput
+            id="password"
+            type="password"
+            name="password"
+            value={data.password}
+            className="mt-1 block w-full"
+            autoComplete="current-password"
+            handleChange={onHandleChange}
+          />
+
+          <InputError message={errors.password} className="mt-2" />
+        </div>
+
+        <div className="block mt-4">
+          <label className="flex items-center">
+            <Checkbox name="remember" value={data.remember} handleChange={onHandleChange} />
+            <span className="ml-2 text-sm text-gray-600">Remember me</span>
+          </label>
+        </div>
+
+        <div className="flex items-center justify-end mt-4">
+          <div className="flex flex-col">
+            {canResetPassword && (
+              <Link
+                href={route('password.request')}
+                className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+              >
+                Forgot your password?
+              </Link>
             )}
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel forInput="login" value="Email / Username" />
+            <Link
+              href={route('register')}
+              className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+            >
+              Don't have an account?
+            </Link>
+          </div>
 
-                    <TextInput
-                        id="login"
-                        type="text"
-                        name="login"
-                        value={data.login}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        handleChange={onHandleChange}
-                    />
-
-                    <InputError message={errors.login} className="mt-2" />
-                    {errors.username && errors.email && (
-                        <InputError
-                            message="Email / Username required"
-                            className="mt-2"
-                        />
-                    )}
-                    {!errors.username && errors.email && (
-                        <InputError message={errors.email} className="mt-2" />
-                    )}
-                    {errors.username && !errors.email && (
-                        <InputError
-                            message={errors.username}
-                            className="mt-2"
-                        />
-                    )}
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel forInput="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        handleChange={onHandleChange}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            value={data.remember}
-                            handleChange={onHandleChange}
-                        />
-                        <span className="ml-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
-                    </label>
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    <div className="flex flex-col">
-                        {canResetPassword && (
-                            <Link
-                                href={route('password.request')}
-                                className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-                            >
-                                Forgot your password?
-                            </Link>
-                        )}
-
-                        <Link
-                            href={route('register')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-                        >
-                            Don't have an account?
-                        </Link>
-                    </div>
-
-                    <PrimaryButton className="ml-4" processing={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
-    )
+          <PrimaryButton className="ml-4" processing={processing}>
+            Log in
+          </PrimaryButton>
+        </div>
+      </form>
+    </GuestLayout>
+  )
 }

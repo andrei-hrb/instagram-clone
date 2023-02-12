@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Profile\ProfileFollowOrUnfollowRequest;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -91,21 +90,14 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function follow(ProfileFollowOrUnfollowRequest $request): RedirectResponse
+    public function follow(User $user, Request $request): RedirectResponse
     {
-        $validated = $request->validated();
+        if ($request->user()->following()->where('following_id', $user->id)->exists()) {
+            $request->user()->following()->detach($user->id);
+        } else {
+            $request->user()->following()->syncWithoutDetaching($user->id);
+        }
 
-        auth()->user()->following()->syncWithoutDetaching($validated['id']);
-
-        return Redirect::route('profile.show', $validated['id']);
-    }
-
-    public function unfollow(ProfileFollowOrUnfollowRequest $request): RedirectResponse
-    {
-        $validated = $request->validated();
-
-        auth()->user()->following()->detach($validated['id']);
-
-        return Redirect::route('profile.show', $validated['id']);
+        return Redirect::route('profile.show', $user->id);
     }
 }

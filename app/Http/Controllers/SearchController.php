@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
 class SearchController extends Controller
@@ -28,9 +29,9 @@ class SearchController extends Controller
     public function query(Request $request): string
     {
         if ($request->has('query') && ! empty($request->input('query', []))) {
-            return response()->json(User::search($request->input('query', []))->get(), 200)->getContent();
+            return Response::json(User::search($request->input('query', []))->get(), 200)->getContent();
         }
 
-        return response()->json([], 200)->getContent();
+        return Response::json([], 200)->getContent();
     }
 }
