@@ -5,13 +5,16 @@ namespace App\Models;
 use App\Models\Traits\Commentable;
 use App\Models\Traits\Imageable;
 use App\Models\Traits\Likeable;
+use Cesargb\Database\Support\CascadeDelete;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use HasFactory, Imageable, Likeable, Commentable;
+    use HasFactory, CascadeDelete, Imageable, Likeable, Commentable;
+
+    protected array $cascadeDeleteMorph = ['image', 'likes', 'comments'];
 
     /**
      * Set default order
