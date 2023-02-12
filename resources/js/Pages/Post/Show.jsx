@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link, router } from '@inertiajs/react'
-import Heart from '@/Components/Icons/Heart'
 import CommentCreate from '@/Pages/Post/Partials/Comment/CommentCreate'
 import CommentEdit from '@/Pages/Post/Partials/Comment/CommentEdit'
 import Comment from '@/Pages/Post/Partials/Comment/Comment'
@@ -10,6 +9,8 @@ import CustomModalUser from '@/Components/CustomModalUser'
 import CommentDelete from '@/Pages/Post/Partials/Comment/CommentDelete'
 import PostEdit from '@/Pages/Post/Partials/Post/PostEdit'
 import PostDelete from '@/Pages/Post/Partials/Post/PostDelete'
+import PostImage from '@/Pages/Post/Partials/Post/PostImage'
+import PostInfo from '@/Pages/Post/Partials/Post/PostInfo'
 
 export default function Index({ auth, errors, post }) {
   const [openLikeModal, setOpenLikeModal] = useState(false)
@@ -37,49 +38,19 @@ export default function Index({ auth, errors, post }) {
       <div className="py-12">
         <div className="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div
-              className="md:p-12 text-gray-900 select-none"
-              onDoubleClick={() =>
-                router.visit(route('posts.like', post.id), {
-                  method: 'post',
-                  preserveScroll: true,
-                })
-              }
-            >
-              <img className="w-full rounded-sm" src={post.image?.url} alt={`${post.user.name}'s Post #${post.id}`} />
-            </div>
+            <PostImage post={post} />
           </div>
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div className="p-6 text-gray-900 flex space-x-4">
-              <Link href={route('posts.like', post.id)} preserveScroll={true} as="button" method="post">
-                <Heart
-                  classNames={'w-6 h-6'}
-                  filled={[...post.likes].map((like) => like.user_id).includes(auth.user.id)}
-                />
-              </Link>
-
-              <button
-                disabled={post.likes.length === 0}
-                type="button"
-                onClick={() => setOpenLikeModal(true)}
-                className={`${post.likes.length !== 0 ? 'hover:underline' : ''}`}
-              >
-                {post.likes.length} Like
-                {post.likes.length !== 1 && <>s</>}
-              </button>
-              <button
-                type="button"
-                className="hover:underline"
-                onClick={() =>
-                  document.getElementById('comments').scrollIntoView({
-                    behavior: 'smooth',
-                  })
-                }
-              >
-                {post.comments.length} Comment
-                {post.comments.length !== 1 && <>s</>}
-              </button>
-            </div>
+            <PostInfo
+              post={post}
+              auth={auth}
+              onLikesClick={() => setOpenLikeModal(true)}
+              onCommentsClick={() =>
+                document.getElementById('comments').scrollIntoView({
+                  behavior: 'smooth',
+                })
+              }
+            />
           </div>
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div id="comments" className="text-gray-900 flex space-x-4">
