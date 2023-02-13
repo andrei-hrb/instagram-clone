@@ -5,7 +5,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo'
 import Dropdown from '@/Components/Dropdown'
 import NavLink from '@/Components/NavLink'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
-import { Link, router } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 
 export default function Authenticated({ auth, header, children }) {
@@ -45,6 +45,10 @@ export default function Authenticated({ auth, header, children }) {
           >{`✨ User ${e.user.name} (@${e.user.username}) just added a new post!`}</Link>
         ))
       })
+
+    return () => {
+      Echo.leaveAllChannels()
+    }
   }, [])
 
   return (

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link, router } from '@inertiajs/react'
 import CommentCreate from '@/Pages/Post/Partials/Comment/CommentCreate'
@@ -23,14 +23,20 @@ export default function Index({ auth, errors, post }) {
   const postHasDescription = post.description !== null
   const postHasComments = post.comments.length > 0
 
-  Echo.channel(`post.${post.id}`).listen('UpdatePost', (e) => {
-    if (e.user_id !== auth.user.id) {
-      router.reload({
-        preserveState: true,
-        preserveScroll: true,
-      })
+  useEffect(() => {
+    Echo.channel(`post.${post.id}`).listen('UpdatePost', (e) => {
+      if (e.user_id !== auth.user.id) {
+        router.reload({
+          preserveState: true,
+          preserveScroll: true,
+        })
+      }
+    })
+
+    return () => {
+      Echo.leaveAllChannels()
     }
-  })
+  }, [])
 
   return (
     <AuthenticatedLayout
