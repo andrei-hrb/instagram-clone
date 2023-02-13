@@ -69,6 +69,8 @@ class PostController extends Controller
             'description' => $validated['description'],
         ]);
 
+        UpdatePost::dispatch($post);
+
         return Redirect::back();
     }
 
@@ -78,8 +80,6 @@ class PostController extends Controller
     public function destroy(Post $post, PostDestroyRequest $request): RedirectResponse
     {
         $request->validated();
-
-        UpdatePost::dispatch($post);
 
         $post->delete();
 
